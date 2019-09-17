@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace Lab_3
+{
+    class Program
+    {
+        static string[] Places = new string[] { "Stockholm", "Göteborg", "Oslo", "Luleå", "Helsinki", "Berlin", "Paris" };
+        static double[] Latitudes = new double[] { 59.3261917, 57.7010496, 59.8939529, 65.5867395, 60.11021, 52.5069312, 48.859 };
+        static double[] Longitudes = new double[] { 17.7018773, 11.6136602, 10.6450348, 22.0422998, 24.7385057, 13.1445521, 2.2069765 };
+        static void Main(string[] args)
+        {
+            var firstLatitude = Latitudes[0];
+            var firstLongitude = Longitudes[0];
+            Console.WriteLine("Latitude and longitude for coordinates x1, and y1: " + firstLatitude + ", " + firstLongitude);
+            var secondLatitude = Latitudes[1];
+            var secondLongitude = Longitudes[1];
+            Console.WriteLine("Latitude and longitude for coordinates x2, and y2: " + secondLatitude + ", " + secondLongitude);
+            var finalResult = Distance(firstLatitude, secondLatitude, firstLongitude, secondLongitude);
+            Console.WriteLine("Distance between coordinates '{0}', '{1}' and '{2}', '{3}' is '{4}'", firstLatitude, firstLongitude, secondLatitude, secondLongitude, finalResult);
+            Console.ReadLine();
+            string firstCity = Places[0];
+            string secondCity = Places[2];
+            Console.WriteLine("Distance between cities: " + Distance(firstCity, secondCity));
+            Console.ReadLine();
+            Distance(new string[] { "Helsinki", "Luleå", "Oslo", "Paris" });
+            Console.ReadKey(true);
+        }
+        private static double Distance(double firstLatitude, double secondLatitude, double firstLongitude, double secondLongitude)
+        {
+            var firstCalculation = Math.Pow((secondLatitude - firstLatitude), 2);
+            var secondCalculation = Math.Pow((secondLongitude - firstLongitude), 2);
+            var result = Math.Sqrt(firstCalculation + secondCalculation);
+            // Convert to meters
+            result = result * 180 / Math.PI;
+
+
+            return result;
+        }
+        private static double Distance(string firstCity, string secondCity)
+        {
+            var firstLatitude = Latitudes[Array.IndexOf(Places, firstCity)];
+            var firstLongitude = Longitudes[Array.IndexOf(Places, firstCity)];
+            var secondLatitude = Latitudes[Array.IndexOf(Places, secondCity)];
+            var secondLongitude = Longitudes[Array.IndexOf(Places, secondCity)];
+            var result = Distance(firstLatitude, secondLatitude, firstLongitude, secondLongitude);
+            return result;
+        }
+        private static double Distance(string[] arrayRoute)
+        {
+            double result = 0;
+            for (int i = 0, j = 1; i < arrayRoute.Length && j < arrayRoute.Length; i++, j++)
+            {
+                var distanceBetweenCities = Distance(arrayRoute[i], arrayRoute[j]);
+                Console.WriteLine("Distance between " + arrayRoute[i] + " and " + arrayRoute[j] + " = " + distanceBetweenCities);
+                result += distanceBetweenCities;
+
+            }
+            Console.WriteLine("Total distance: " + result);
+            return result;
+        }
+    }
+}
